@@ -11,6 +11,7 @@
  }   
     
 $itemName = array_key_exists('item', $_POST) ? $_POST['item'] : null;
+$itemNameOld = array_key_exists('itemold', $_POST) ? $_POST['itemold'] : $itemName;
 $itemCount = array_key_exists('count', $_POST) ? $_POST['count'] : null;
 $itemChecked = array_key_exists('checked', $_POST) ? $_POST['checked'] : "false";
 $jsonData = array_key_exists('jsonArray', $_POST) ? $_POST['jsonArray'] : null;
@@ -59,8 +60,8 @@ include('db_connector.php');
 			echo $db->listall();
 		break;
 		case 'save':
-			if($db->exists($itemName)){
-				echo $db->update($itemName, $itemCount, $itemChecked);
+			if($db->exists($itemNameOld)){
+				echo $db->update($itemName, $itemCount, $itemChecked, $itemNameOld);
 			} else {
 				echo $db->save($itemName, $itemCount, $itemChecked);
 			}
@@ -83,6 +84,7 @@ include('db_connector.php');
 		case 'addQRcodeItem':
 			$response = file_get_contents("https://api.outpan.com/v2/products/" . $itemName . "/?apikey=" . $outpanApiKey);
 			$name = json_decode($response)->{'name'};
+			file_put_contents("barcode.log", $itemName . "\t" . $name . "\n", FILE_APPEND);
 			if ( $name != "" ) {
 				$itemName = $name;
 				$itemCount = 1;

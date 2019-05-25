@@ -110,11 +110,12 @@
             }
         }
         
-        function update($item, $count, $checked){
+        function update($item, $count, $checked, $itemold){
             try{
                 $checked = $checked == "true" ? 1 : 0;
-                $stmt = $this->db->prepare("UPDATE $this->table SET count=:count, checked=:checked WHERE item=:item;");
+                $stmt = $this->db->prepare("UPDATE $this->table SET count=:count, checked=:checked, item=:item WHERE item=:itemold;");
                 $stmt->bindParam(':item', $item, PDO::PARAM_STR);
+                $stmt->bindParam(':itemold', $itemold, PDO::PARAM_STR);
                 $stmt->bindParam(':count', $count, PDO::PARAM_INT);
                 $stmt->bindParam(':checked', $checked, PDO::PARAM_INT);
                 $stmt->execute();

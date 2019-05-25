@@ -1,5 +1,5 @@
 <?php
-	define('BACKEND_VERSION', 1.0);
+	define('BACKEND_VERSION', 2.0);
 	
 	define('API_SUCCESS_LIST', 1000);
 	define('API_SUCCESS_LIST_EMPTY', 1001);
